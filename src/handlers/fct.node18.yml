@@ -1,0 +1,5 @@
+handler: src/handlers/versions.handler
+name: ${self:service}-versions-node18
+memorySize: ${self:custom.stage.lambda.memorySize, self:provider.memorySize}
+timeout: ${self:custom.stage.lambda.timeout, self:provider.timeout}
+runtime: nodejs18.x
