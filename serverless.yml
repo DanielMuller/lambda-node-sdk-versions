@@ -6,6 +6,9 @@ configValidationMode: error
 
 custom:
   stage: ${file(config/stages/${self:provider.stage}.yml)}
+  tags: ${self:custom.stage.tags}
+  tableName: ${self:service}-versions-history
+
   # Add custom variables here. You can re-use variables defined in the stage yml
   # customStageVar: ${self:custom.stage.customStageVar}
   esbuild:
@@ -33,6 +36,7 @@ provider:
   timeout: ${self:custom.stage.lambda.timeout, '10'}
   logRetentionInDays: ${self:custom.stage.lambda.logRetention, 1}
   iam: ${file(serverless.iam.yml)}
+  stackTags: ${self:custom.tags}
   deploymentBucket:
     name: com.serverless.${aws:accountId}.${aws:region}.deploys
     blockPublicAccess: true
@@ -40,7 +44,8 @@ provider:
     serverSideEncryption: AES256
   environment:
     SERVERLESS_REGION: ${aws:region}
+    TABLE_NAME: ${self:custom.tableName}
 functions: ${file(helpers/main.js):getFunctions}
-# resources:
-#   Resources: ${file(helpers/main.js):getResources}
+resources:
+  Resources: ${file(helpers/main.js):getResources}
 #  Outputs: ${file(helpers/main.js):getOutputs}

@@ -7,3 +7,8 @@ lambda:
   memorySize: 128
   timeout: 10
   logRetention: 1
+tags:
+  project: ${self:service}
+  role: function
+  service: function
+  billing_entity: me

@@ -3,3 +3,5 @@ name: ${self:service}-versions-node20
 memorySize: ${self:custom.stage.lambda.memorySize, self:provider.memorySize}
 timeout: ${self:custom.stage.lambda.timeout, self:provider.timeout}
 runtime: nodejs20.x
+events:
+  - schedule: rate(1 day)
