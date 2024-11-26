@@ -1,34 +1,32 @@
+org: ${self:custom.stage.org}
 service: node-sdk-versions
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '3.38.0'
 configValidationMode: error
+frameworkVersion: '>=4.4.12 <5'
+
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    buildConcurrency: 3
+    sourcemap:
+      type: linked
+      setNodeOptions: true
 
 custom:
   stage: ${file(config/stages/${self:provider.stage}.yml)}
   tags: ${self:custom.stage.tags}
   tableName: ${self:service}-versions-history
 
-  # Add custom variables here. You can re-use variables defined in the stage yml
-  # customStageVar: ${self:custom.stage.customStageVar}
-  esbuild:
-    packager: 'npm'
-    sourcemap: false
-    bundle: true
-    minify: true
-    keepNames: true
-    exclude:
-      - '@aws-sdk'
-
 plugins:
-  - serverless-esbuild
   - serverless-deployment-bucket
 package:
   individually: true
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs22.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, self:custom.stage.region}
   profile: ${self:custom.stage.profile}
@@ -37,6 +35,11 @@ provider:
   logRetentionInDays: ${self:custom.stage.lambda.logRetention, 1}
   iam: ${file(serverless.iam.yml)}
   stackTags: ${self:custom.tags}
+  logs:
+    lambda:
+      logFormat: JSON
+      applicationLogLevel: DEBUG
+      systemLogLevel: WARN
   deploymentBucket:
     name: com.serverless.${aws:accountId}.${aws:region}.deploys
     blockPublicAccess: true
