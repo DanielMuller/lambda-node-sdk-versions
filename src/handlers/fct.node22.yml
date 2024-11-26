@@ -1,0 +1,7 @@
+handler: src/handlers/versions.handler
+name: ${self:service}-versions-node22
+memorySize: ${self:custom.stage.lambda.memorySize, self:provider.memorySize}
+timeout: ${self:custom.stage.lambda.timeout, self:provider.timeout}
+runtime: nodejs22.x
+events:
+  - schedule: rate(1 day)
