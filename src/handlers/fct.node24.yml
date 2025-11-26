@@ -1,7 +1,7 @@
 handler: src/handlers/versions.handler
-name: ${self:service}-versions-node18
+name: ${self:service}-versions-node24
 memorySize: ${self:custom.stage.lambda.memorySize, self:provider.memorySize}
 timeout: ${self:custom.stage.lambda.timeout, self:provider.timeout}
-runtime: nodejs18.x
+runtime: nodejs24.x
 events:
   - schedule: rate(1 day)

@@ -3,7 +3,6 @@ service: node-sdk-versions
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 configValidationMode: error
-frameworkVersion: '>=4.4.12 <5'
 
 build:
   esbuild:
@@ -26,7 +25,7 @@ package:
 
 provider:
   name: aws
-  runtime: nodejs22.x
+  runtime: nodejs24.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, self:custom.stage.region}
   profile: ${self:custom.stage.profile}
